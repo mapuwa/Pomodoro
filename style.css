@@ -2,4 +2,9 @@ svg {
     width: 15vw;
     height: 15vw;
     border: 1px solid black;
+    transition: all 0.5s ease;
+    transform: rotate(-90deg);
+}
+#bar {
+    transition: stroke-dashoffset 1s linear;
 }

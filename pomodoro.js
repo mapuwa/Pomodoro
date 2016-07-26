@@ -1,42 +1,39 @@
 
-function timeout(x) {
+function timeout(x,y) {
     var mins = Math.floor(x/60);
     var secs = x % 60;
     document.getElementById("clock").innerHTML = mins + ":" + (secs > 9 ? secs : "0"+ secs);
+    changeTimer(x,y);
     setTimeout(function () {
         x--;
-        if (x) timeout(x);
+        if (x)
+            timeout(x,y);
         else {
-	    	document.getElementById("clock").innerHTML = "00:00"
+	    	document.getElementById("clock").innerHTML = "00:00";
+            changeTimer(0,y);
 		alert("Short break");
-		timeout(5*60);
+		timeout(5*60, 5*60);
 	}
     }, 1000);
 }
+
+
+function changeTimer(current, whole) {
+    var val = current/whole*100;
+    var circle = document.getElementById("bar");
+    var r = circle.getAttribute('r');
+    var c = Math.PI*(r*2);
+
+    if (val < 0) { val = 0;}
+    if (val > 100) { val = 100;}
+
+    var pct = ((100-val)/100)*c;
+
+    circle.style.strokeDashoffset = pct;
+}
+
+
 document.getElementById("start").addEventListener("click", function () {
-    timeout(13);
+    timeout(13,13);
 });
 
-function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-    var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
-    return {
-        x: centerX + (radius * Math.cos(angleInRadians)),
-        y: centerY + (radius * Math.sin(angleInRadians))
-    };
-}
-
-function describeArc(x, y, radius, startAngle, endAngle){
-    var start = polarToCartesian(x, y, radius, endAngle);
-    var end = polarToCartesian(x, y, radius, startAngle);
-
-    var arcSweep = endAngle - startAngle <= 180 ? "0" : "1";
-
-    var d = [
-        "M", start.x, start.y,
-        "A", radius, radius, 0, arcSweep, 0, end.x, end.y
-    ].join(" ");
-
-    return d;
-}
-
-document.getElementById("arc1").setAttribute("d", describeArc(150, 150, 100, 0, 90));
