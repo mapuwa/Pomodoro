@@ -7,13 +7,18 @@
     <title>Pomodoro</title>
 </head>
 <body>
-<div id="modal" class="modal">
+<div id="settings-modal" class="modal">
     <div class="modal-inside">
-        <button id="modal-close" class="modal-close">&#10799;</button>
+        <button id="settings-modal-close" class="modal-close">&#10799;</button>
         <label for="session-length">Session length</label> <input type="number" id="session-length" value="25" step="1" min="0" > minutes <br>
-        <label for="session-length">Break length</label> <input type="number" id="break-length" value="5" step="1" min="0" > minutes <br>
+        <label for="session-length">Break length</label> <input type="number" id="break-length" value="5" step="1" min="0" > minutes
     </div>
-
+</div>
+<div id="info-modal" class="modal">
+    <div class="modal-inside">
+        <button id="info-modal-close" class="modal-close">&#10799;</button>
+        <span id="info-text"></span>
+    </div>
 </div>
 <button id="settings-button">Settings</button>
 <div class="timer">

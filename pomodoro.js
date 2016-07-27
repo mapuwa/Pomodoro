@@ -58,6 +58,15 @@ var Timer = function(w, callback) {
         }
     };
 };
+
+function openInfoModal(text) {
+    document.getElementById("info-text").innerHTML = text;
+    document.getElementById("info-modal").style.display = "block";
+    setTimeout(function () {
+        document.getElementById("info-modal").style.opacity = 1;
+    }, 1);
+}
+
 var timer;
 
 document.getElementById("startButton").addEventListener("click", function () {
@@ -65,7 +74,7 @@ document.getElementById("startButton").addEventListener("click", function () {
     timer = Timer(6, function () {
         var sound = new Audio("gong.wav");
         sound.play();
-        console.log("A");
+        openInfoModal("Session end <br> Enjoy your break");
     });
 });
 document.getElementById("pauseButton").addEventListener("click", function () {
@@ -80,15 +89,22 @@ document.getElementById("pauseButton").addEventListener("click", function () {
 });
 
 document.getElementById("settings-button").addEventListener("click", function () {
-    document.getElementById("modal").style.display = "block";
+    document.getElementById("settings-modal").style.display = "block";
     setTimeout(function () {
-        document.getElementById("modal").style.opacity = 1;
+        document.getElementById("settings-modal").style.opacity = 1;
     }, 1);
 });
 
-document.getElementById("modal-close").addEventListener("click", function () {
-    document.getElementById("modal").style.opacity = 0;
+document.getElementById("settings-modal-close").addEventListener("click", function () {
+    document.getElementById("settings-modal").style.opacity = 0;
     setTimeout(function () {
-        document.getElementById("modal").style.display = "none";
+        document.getElementById("settings-modal").style.display = "none";
+    }, 1000);
+});
+
+document.getElementById("info-modal-close").addEventListener("click", function () {
+    document.getElementById("info-modal").style.opacity = 0;
+    setTimeout(function () {
+        document.getElementById("info-modal").style.display = "none";
     }, 1000);
 });

@@ -85,7 +85,7 @@ body[timer="break"] .background-circle {
 .modal {
     display: none;
     opacity: 0;
-    background: rgba(20,20,20,0.3);
+    background: rgba(20,20,20,0.7);
     position: fixed;
     top: 0;
     left: 0;
