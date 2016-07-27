@@ -1,4 +1,25 @@
-svg {
+* {
+    box-sizing: border-box;
+}
+body {
+    width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 5vw;
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    color: #797973;
+}
+
+/* Timer */
+.timer {
+    width: 30vw;
+    height: 30vw;
+    margin: 0 auto 0 auto;
+    padding: 0;
+    position: relative;
+}
+.svg-timer {
     width: 100%;
     height: 100%;
     transform: rotate(-90deg);
@@ -14,22 +35,6 @@ svg {
     stroke: transparent;
     stroke-width: 7px;
     transition: stroke-dashoffset 1s linear;
-}
-body {
-    width: 100vw;
-    min-height: 100vh;
-    margin: 0;
-    text-align: center;
-    font-family: 'Lato', sans-serif;
-    color: #797973;
-}
-
-.timer {
-    width: 30vw;
-    height: 30vw;
-    margin: 0 auto;
-    padding: 0;
-    position: relative;
 }
 .timer-sign {
     font-weight: 400;
@@ -49,7 +54,7 @@ body {
     left: 0.5vw;
     font-size: 5vw;
 }
-
+/* Session Timer */
 body[timer="session"] {
     background: #f44236;
 }
@@ -64,7 +69,7 @@ body[timer="session"] .background-circle {
 body[timer="session"] .timer-circle, body[timer="break"] .timer-circle, body[timer="on"] .timer-circle{
     stroke: white;
 }
-
+/* Break Timer */
 body[timer="break"] {
     background: #8bc24a;
 }
@@ -74,4 +79,51 @@ body[timer="break"] .timer-sign {
 
 body[timer="break"] .background-circle {
     stroke: #33691e;
+}
+
+/* Modal window */
+.modal {
+    display: none;
+    opacity: 0;
+    background: rgba(20,20,20,0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    margin: 0;
+    transition: opacity 1s ease;
+}
+.modal-inside {
+    background: white;
+    position: fixed;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    margin: auto;
+    width: 80vw;
+    height: 80vh;
+    z-index: 1000;
+    font-size: 5vw;
+    padding-top: calc(30vh - 5vw);
+}
+.modal-inside input{
+    border: none;
+    outline: none;
+    text-align: right;
+    margin-top: 2vw;
+    margin-right: 15px;
+    width: 10vw;
+    font-size: 5vw;
+}
+.modal-close {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background: none;
+    font-size: 8vw;
+    cursor: pointer;
+    outline: none;
 }

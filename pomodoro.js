@@ -1,11 +1,9 @@
-
 var Timer = function(w, callback) {
     var current = w;
     var whole = w;
     var running = true;
     var paused = false;
     var timer = setInterval(function(){ intervalFunc() }, 1000);
-
     changeTimer(-1);
 
     function displayTime() {
@@ -37,7 +35,6 @@ var Timer = function(w, callback) {
         running = false;
         callback();
     }
-
     return {
         getCurrent: function () {
             return current;
@@ -57,15 +54,17 @@ var Timer = function(w, callback) {
         },
         play: function () {
             paused = false;
+            changeTimer(-1);
         }
-
     };
-
 };
 var timer;
+
 document.getElementById("startButton").addEventListener("click", function () {
-    document.getElementsByTagName("body")[0].setAttribute("timer", "break");
+    document.getElementsByTagName("body")[0].setAttribute("timer", "session");
     timer = Timer(6, function () {
+        var sound = new Audio("gong.wav");
+        sound.play();
         console.log("A");
     });
 });
@@ -78,4 +77,18 @@ document.getElementById("pauseButton").addEventListener("click", function () {
             timer.pause();
         }
     }
+});
+
+document.getElementById("settings-button").addEventListener("click", function () {
+    document.getElementById("modal").style.display = "block";
+    setTimeout(function () {
+        document.getElementById("modal").style.opacity = 1;
+    }, 1);
+});
+
+document.getElementById("modal-close").addEventListener("click", function () {
+    document.getElementById("modal").style.opacity = 0;
+    setTimeout(function () {
+        document.getElementById("modal").style.display = "none";
+    }, 1000);
 });
