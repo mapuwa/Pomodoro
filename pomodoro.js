@@ -114,6 +114,10 @@ document.getElementById("settings-modal-close").addEventListener("click", functi
     sessionLength = document.getElementById("session-length").valueOf().value;
     breakLength = document.getElementById("break-length").valueOf().value;
     document.getElementById("settings-modal").style.opacity = 0;
+    var bodyTimer = document.getElementsByTagName("body")[0].getAttribute("timer");
+    if (bodyTimer !== "session" && bodyTimer !== "break") {
+        document.getElementById("timer-mins").innerHTML = sessionLength;
+    }
     setTimeout(function () {
         document.getElementById("settings-modal").style.display = "none";
     }, 1000);
