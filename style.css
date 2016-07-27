@@ -1,35 +1,60 @@
 svg {
-    width: 40vw;
-    height: 40vw;
+    width: 100%;
+    height: 100%;
     transform: rotate(-90deg);
+    margin:0;
 }
 .background-circle {
     fill: transparent;
-    stroke: #bfbfbf;
+    stroke: #797973;
     stroke-width: 7px;
 }
 .timer-circle {
-    stroke: red;
+    fill: transparent;
+    stroke: transparent;
     stroke-width: 2px;
     transition: stroke-dashoffset 1s linear;
-    fill: transparent;
 }
 body {
     width: 100vw;
+    min-height: 100vh;
     margin: 0;
     text-align: center;
+    font-family: 'Lato', sans-serif;
+    color: #5c5c57;
 }
+
 .timer {
-    width: 50vw;
+    width: 30vw;
+    height: 30vw;
     margin: 0 auto;
+    padding: 0;
     position: relative;
 }
 .timer-sign {
+    font-weight: 400;
     position: absolute;
-    top: 15vw;
+    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
-    margin: 0 auto;
+    margin: auto;
     font-size: 5vw;
-    display: inline-block;
+    height: 6vw;
+}
+
+
+body[timer="on"] {
+    background: #f44236;
+}
+body[timer="on"] .timer-sign {
+    color: white;
+}
+
+body[timer="on"] .background-circle {
+    stroke: #b71d1d;
+}
+
+body[timer="on"] .timer-circle {
+    stroke: white;
 }

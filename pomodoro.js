@@ -1,23 +1,4 @@
 
-function timeout(x,y) {
-    var mins = Math.floor(x/60);
-    var secs = x % 60;
-    document.getElementById("clock").innerHTML = mins + ":" + (secs > 9 ? secs : "0"+ secs);
-    changeTimer(x - 1, y);
-    setTimeout(function () {
-        x--;
-        if (x)
-            timeout(x,y);
-        else {
-	    	document.getElementById("clock").innerHTML = "00:00";
-            changeTimer(0,y);
-		alert("Short break");
-		timeout(5*60, 5*60);
-	}
-    }, 1000);
-}
-
-
 function changeTimer(current, whole) {
     var value = current / whole ;
     if (value < 0)  value = 0;
@@ -26,13 +7,51 @@ function changeTimer(current, whole) {
     var circle = document.getElementById("bar");
     var r = circle.getAttribute('r');
 
-    var dashOfsset = (1 - value) * Math.PI*(r*2);
-
-    circle.style.strokeDashoffset = dashOfsset;
+    circle.style.strokeDashoffset = (1 - value) * Math.PI*(r * 2);
 }
 
+var Timer = function(w, callback) {
+    var current = w;
+    var whole = w;
+    var running = true;
+    var timer = setInterval(function(){ intervalFunc() }, 1000);
 
-document.getElementById("start").addEventListener("click", function () {
-    timeout(12,12);
+    changeTimer(current - 1, whole);
+
+    function intervalFunc() {
+        current--;
+        var mins = Math.floor(current / 60);
+        var secs = current % 60;
+        document.getElementById("clock").innerHTML = mins + ":" + (secs > 9 ? secs : "0" + secs);
+        changeTimer(current - 1, whole);
+        if (current === 0) stopTimer();
+    }
+
+    function stopTimer() {
+        clearInterval(timer);
+        running = false;
+        callback();
+    }
+
+    return {
+        getCurrent: function () {
+            return current;
+        },
+        isRunning: function () {
+            return running;
+        },
+        stop: function () {
+            stopTimer();
+        }
+    };
+
+};
+var timer;
+document.getElementById("startButton").addEventListener("click", function () {
+    document.getElementsByTagName("body")[0].setAttribute("timer", "on");
+    var timer = Timer(12, function () {
+        console.log("A");
+    });
+
 });
 
