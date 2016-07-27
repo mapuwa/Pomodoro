@@ -7,6 +7,7 @@
     <title>Pomodoro</title>
 </head>
 <body>
+
 <div id="settings-modal" class="modal">
     <div class="modal-inside">
         <button id="settings-modal-close" class="modal-close">&#10799;</button>
@@ -14,13 +15,16 @@
         <label for="session-length">Break length</label> <input type="number" id="break-length" value="5" step="1" min="0" > minutes
     </div>
 </div>
+
 <div id="info-modal" class="modal">
     <div class="modal-inside">
         <button id="info-modal-close" class="modal-close">&#10799;</button>
         <span id="info-text"></span>
     </div>
 </div>
+
 <button id="settings-button">Settings</button>
+
 <div class="timer">
     <svg class="svg-timer" viewBox="0 0 200 200" version="1.1">
         <circle class="background-circle" r="90" cx="100" cy="100" ></circle>
@@ -29,8 +33,8 @@
     <h2 class="timer-sign"><span id="timer-mins">25</span><span class="timer-sign-up" id="timer-secs">00</span></h2>
 </div>
 
-<button id="startButton">Start &#9724;</button>
 <button id="pauseButton">&#9658; &#9614; &#9614;</button>
+<button id="stopButton" class="button stop-button">&#9724;</button>
 
 <script src="pomodoro.js"></script>
 </body>

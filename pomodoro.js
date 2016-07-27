@@ -5,7 +5,7 @@ var Timer = function(w, callback) {
     var paused = false;
     var timer = setInterval(function(){ intervalFunc() }, 1000);
     changeTimer(-1);
-
+    displayTime();
     function displayTime() {
         var mins = Math.floor(current / 60);
         var secs = current % 60;
@@ -33,6 +33,12 @@ var Timer = function(w, callback) {
     function stopTimer() {
         clearInterval(timer);
         running = false;
+        var sound = new Audio("gong.wav");
+        sound.play();
+        current = 0;
+        displayTime();
+        current = whole;
+        changeTimer();
         callback();
     }
     return {
@@ -68,17 +74,26 @@ function openInfoModal(text) {
 }
 
 var timer;
+var sessionLength = 25;
+var breakLength = 5;
 
-document.getElementById("startButton").addEventListener("click", function () {
-    document.getElementsByTagName("body")[0].setAttribute("timer", "session");
-    timer = Timer(6, function () {
-        var sound = new Audio("gong.wav");
-        sound.play();
-        openInfoModal("Session end <br> Enjoy your break");
-    });
+document.getElementById("stopButton").addEventListener("click", function () {
+    document.getElementsByTagName("body")[0].setAttribute("timer", "");
+    timer.stop();
+    timer = null;
+    document.getElementById("timer-mins").innerHTML = sessionLength;
+
+    document.getElementById("stopButton").style.opacity = 0;
 });
 document.getElementById("pauseButton").addEventListener("click", function () {
-    if (timer && timer.isRunning()) {
+    if (!timer || timer && !timer.isRunning()) {
+        document.getElementsByTagName("body")[0].setAttribute("timer", "session");
+        document.getElementById("stopButton").style.opacity = 1;
+        timer = Timer(6, function () {
+            openInfoModal("Session end <br> Enjoy your break");
+        });
+    }
+    else {
         if (timer.isPaused()) {
             timer.play();
         }
@@ -96,6 +111,8 @@ document.getElementById("settings-button").addEventListener("click", function ()
 });
 
 document.getElementById("settings-modal-close").addEventListener("click", function () {
+    sessionLength = document.getElementById("session-length").valueOf().value;
+    breakLength = document.getElementById("break-length").valueOf().value;
     document.getElementById("settings-modal").style.opacity = 0;
     setTimeout(function () {
         document.getElementById("settings-modal").style.display = "none";
@@ -107,4 +124,18 @@ document.getElementById("info-modal-close").addEventListener("click", function (
     setTimeout(function () {
         document.getElementById("info-modal").style.display = "none";
     }, 1000);
+
+    var body = document.getElementsByTagName("body")[0];
+    if (body.getAttribute("timer") === "session") {
+        body.setAttribute("timer", "break");
+        timer = Timer(breakLength * 60, function () {
+            openInfoModal("Break ends <br> Good luck in work");
+        });
+    }
+    else if (body.getAttribute("timer") === "break") {
+        body.setAttribute("timer", "session");
+        timer = Timer(sessionLength * 60, function () {
+            openInfoModal("Session ends <br> Enjoy your break");
+        });
+    }
 });

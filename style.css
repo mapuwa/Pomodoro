@@ -78,7 +78,7 @@ body[timer="break"] .timer-sign {
 }
 
 body[timer="break"] .background-circle {
-    stroke: #33691e;
+    stroke: #597c30;
 }
 
 /* Modal window */
@@ -126,4 +126,8 @@ body[timer="break"] .background-circle {
     font-size: 8vw;
     cursor: pointer;
     outline: none;
+}
+/*Buttons */
+.stop-button {
+    opacity: 0;
 }
