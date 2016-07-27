@@ -3,7 +3,7 @@ function timeout(x,y) {
     var mins = Math.floor(x/60);
     var secs = x % 60;
     document.getElementById("clock").innerHTML = mins + ":" + (secs > 9 ? secs : "0"+ secs);
-    changeTimer(x,y);
+    changeTimer(x - 1, y);
     setTimeout(function () {
         x--;
         if (x)
@@ -19,21 +19,20 @@ function timeout(x,y) {
 
 
 function changeTimer(current, whole) {
-    var val = current/whole*100;
+    var value = current / whole ;
+    if (value < 0)  value = 0;
+    else if (value > 1) value = 1;
+
     var circle = document.getElementById("bar");
     var r = circle.getAttribute('r');
-    var c = Math.PI*(r*2);
 
-    if (val < 0) { val = 0;}
-    if (val > 100) { val = 100;}
+    var dashOfsset = (1 - value) * Math.PI*(r*2);
 
-    var pct = ((100-val)/100)*c;
-
-    circle.style.strokeDashoffset = pct;
+    circle.style.strokeDashoffset = dashOfsset;
 }
 
 
 document.getElementById("start").addEventListener("click", function () {
-    timeout(13,13);
+    timeout(12,12);
 });
 
