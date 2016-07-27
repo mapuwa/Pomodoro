@@ -84,10 +84,12 @@ document.getElementById("stopButton").addEventListener("click", function () {
     document.getElementById("timer-mins").innerHTML = sessionLength;
 
     document.getElementById("stopButton").style.opacity = 0;
+    document.getElementById("stopButton").style.display = "none";
 });
 document.getElementById("pauseButton").addEventListener("click", function () {
     if (!timer || timer && !timer.isRunning()) {
         document.getElementsByTagName("body")[0].setAttribute("timer", "session");
+        document.getElementById("stopButton").style.display = "inline-block";
         document.getElementById("stopButton").style.opacity = 1;
         timer = Timer(6, function () {
             openInfoModal("Session end <br> Enjoy your break");
