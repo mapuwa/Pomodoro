@@ -65,6 +65,14 @@ var Timer = function(w, callback) {
     };
 };
 
+
+
+Notification.requestPermission();
+
+var timer;
+var sessionLength = 25;
+var breakLength = 5;
+
 function openInfoModal(text) {
     document.getElementById("info-text").innerHTML = text;
     document.getElementById("info-modal").style.display = "block";
@@ -72,39 +80,50 @@ function openInfoModal(text) {
         document.getElementById("info-modal").style.opacity = 1;
     }, 1);
 }
+function notifyMe(message) {
+    if ("Notification" in window && Notification.permission === "granted") {
+        var notification = new Notification(message);
+    }
+}
+function createSessionTimer() {
+    document.getElementsByTagName("body")[0].setAttribute("timer", "session");
+    return Timer(6, function () {
+        openInfoModal("Session ends <br> Enjoy your break");
+        notifyMe("Session ends");
+    });
+}
+function  createBreakTimer() {
+    document.getElementsByTagName("body")[0].setAttribute("timer", "break");
+    return Timer(breakLength * 60, function () {
+        openInfoModal("Break ends <br> Good luck in work");
+        notifyMe("Break ends");
+    });
+}
 
-var timer;
-var sessionLength = 25;
-var breakLength = 5;
 
 document.getElementById("stopButton").addEventListener("click", function () {
-    document.getElementsByTagName("body")[0].setAttribute("timer", "");
     timer.stop();
-    timer = null;
-    document.getElementById("timer-mins").innerHTML = sessionLength;
-
-    document.getElementById("stopButton").style.opacity = 0;
+    document.getElementsByTagName("body")[0].setAttribute("timer", "");
+    document.getElementById("timer-mins").innerHTML = sessionLength; // Init session timer
+    document.getElementById("stopButton").style.opacity = 0; // Hide stop button
     document.getElementById("stopButton").style.display = "none";
 });
+
+/* Start or pause timer */
 document.getElementById("pauseButton").addEventListener("click", function () {
-    if (!timer || timer && !timer.isRunning()) {
-        document.getElementsByTagName("body")[0].setAttribute("timer", "session");
+    if (!timer || timer && !timer.isRunning()) { // When pomodoro is not running, run session timer
+        // Display stop button
         document.getElementById("stopButton").style.display = "inline-block";
         document.getElementById("stopButton").style.opacity = 1;
-        timer = Timer(6, function () {
-            openInfoModal("Session end <br> Enjoy your break");
-        });
+        timer = createSessionTimer();
     }
-    else {
-        if (timer.isPaused()) {
-            timer.play();
-        }
-        else {
-            timer.pause();
-        }
+    else { // When pomodoro is running, pause or resume timer
+        if (timer.isPaused()) timer.play();
+        else timer.pause();
     }
 });
 
+/* Show settings modal window */
 document.getElementById("settings-button").addEventListener("click", function () {
     document.getElementById("settings-modal").style.display = "block";
     setTimeout(function () {
@@ -112,36 +131,34 @@ document.getElementById("settings-button").addEventListener("click", function ()
     }, 1);
 });
 
+/* Close settings modal window */
 document.getElementById("settings-modal-close").addEventListener("click", function () {
+    /* Update pomodoro lengths */
     sessionLength = document.getElementById("session-length").valueOf().value;
     breakLength = document.getElementById("break-length").valueOf().value;
-    document.getElementById("settings-modal").style.opacity = 0;
+    /* Update session length, when pomodoro is not running */
     var bodyTimer = document.getElementsByTagName("body")[0].getAttribute("timer");
     if (bodyTimer !== "session" && bodyTimer !== "break") {
         document.getElementById("timer-mins").innerHTML = sessionLength;
     }
+    /* Close settings modal window*/
+    document.getElementById("settings-modal").style.opacity = 0;
     setTimeout(function () {
         document.getElementById("settings-modal").style.display = "none";
     }, 1000);
 });
 
+/* Close info modal window */
 document.getElementById("info-modal-close").addEventListener("click", function () {
+    /* Close info modal window */
     document.getElementById("info-modal").style.opacity = 0;
     setTimeout(function () {
         document.getElementById("info-modal").style.display = "none";
     }, 1000);
-
-    var body = document.getElementsByTagName("body")[0];
-    if (body.getAttribute("timer") === "session") {
-        body.setAttribute("timer", "break");
-        timer = Timer(breakLength * 60, function () {
-            openInfoModal("Break ends <br> Good luck in work");
-        });
-    }
-    else if (body.getAttribute("timer") === "break") {
-        body.setAttribute("timer", "session");
-        timer = Timer(sessionLength * 60, function () {
-            openInfoModal("Session ends <br> Enjoy your break");
-        });
-    }
+    /* Start next pomodoro timer */
+    var bodyTimer = document.getElementsByTagName("body")[0].getAttribute("timer");
+    if (bodyTimer === "session")
+        timer = createBreakTimer();
+    else if (bodyTimer === "break")
+        timer = createSessionTimer();
 });
