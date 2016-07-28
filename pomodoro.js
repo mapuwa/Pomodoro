@@ -39,6 +39,7 @@ var Timer = function(w, callback) {
         displayTime();
         current = whole;
         changeTimer();
+        document.title = "⚑ Pomodoro Timer"; // Normal page title
         callback();
     }
     return {
@@ -71,7 +72,7 @@ function notify(message) {
 /* Timers factories */
 function createSessionTimer() {
     document.getElementsByTagName("body")[0].setAttribute("timer", "session");
-    return Timer(6, function () {
+    return Timer(sessionLength * 60, function () {
         openInfoModal("Session ends <br> Enjoy your break");
         notify("Session ends!");
     });
@@ -90,11 +91,18 @@ function pauseButtonHandler() {
         // Display stop button
         document.getElementById("stopButton").style.display = "inline-block";
         document.getElementById("stopButton").style.opacity = 1;
+        document.getElementById("pauseButton").innerHTML = "||";
         timer = createSessionTimer();
     }
     else { // When pomodoro is running, pause or resume timer
-        if (timer.isPaused()) timer.play();
-        else timer.pause();
+        if (timer.isPaused()) {
+            timer.play();
+            document.getElementById("pauseButton").innerHTML = "||";
+        }
+        else {
+            timer.pause();
+            document.getElementById("pauseButton").innerHTML = "&#9658;";
+        }
     }
 }
 function stopButtonHandler() {
@@ -102,6 +110,7 @@ function stopButtonHandler() {
     document.getElementsByTagName("body")[0].setAttribute("timer", "");
     document.getElementById("timer-mins").innerHTML = sessionLength; // Init session timer
     document.getElementById("stopButton").style.opacity = 0; // Hide stop button
+    document.getElementById("pauseButton").innerHTML = "&#9658;";
     document.getElementById("stopButton").style.display = "none";
 }
 document.getElementById("stopButton").addEventListener("click", stopButtonHandler);
@@ -121,6 +130,7 @@ function closeInfoModal() {
     setTimeout(function () {
         document.getElementById("info-modal").style.display = "none";
     }, 1000);
+    document.title = "Pomodoro Timer"; // Normal page title
     /* Start next pomodoro timer */
     var bodyTimer = document.getElementsByTagName("body")[0].getAttribute("timer");
     if (bodyTimer === "session")
