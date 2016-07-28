@@ -128,12 +128,12 @@ body[timer="break"] .background-circle {
     cursor: pointer;
     outline: none;
 }
-/*Buttons */
+/* Circle Buttons */
 .stop-button {
     display: none;
     opacity: 0;
 }
-.button {
+.circle-button {
     outline: none;
     border: none;
     background: #f44236;
@@ -146,21 +146,21 @@ body[timer="break"] .background-circle {
     cursor: pointer;
     margin:  0 2vw;
 }
-.button:hover {
+.circle-button:hover {
     background: #b71d1d;
 }
-body[timer="session"] .button {
+body[timer="session"] .circle-button {
     color: #f44236;
     background: white;
 }
-body[timer="session"] .button:hover, body[timer="break"] .button:hover {
+body[timer="session"] .circle-button:hover, body[timer="break"] .circle-button:hover {
     background: #e5e5e5;
 }
-body[timer="break"] .button {
+body[timer="break"] .circle-button {
     color: #8bc24a;
     background: white;
 }
-
+/* Settings button*/
 .settings-button {
     border: none;
     outline: none;
