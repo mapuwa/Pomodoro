@@ -63,13 +63,6 @@ var sessionLength = 25;
 var breakLength = 5;
 
 /* Helping info functions */
-function openInfoModal(text) {
-    document.getElementById("info-text").innerHTML = text;
-    document.getElementById("info-modal").style.display = "block";
-    setTimeout(function () {
-        document.getElementById("info-modal").style.opacity = 1;
-    }, 1);
-}
 function notify(message) {
     if ("Notification" in window && Notification.permission === "granted") {
         var notification = new Notification(message);
@@ -90,16 +83,9 @@ function  createBreakTimer() {
         notify("Break ends!");
     });
 }
-/* Control buttons */
-document.getElementById("stopButton").addEventListener("click", function () {
-    timer.stop();
-    document.getElementsByTagName("body")[0].setAttribute("timer", "");
-    document.getElementById("timer-mins").innerHTML = sessionLength; // Init session timer
-    document.getElementById("stopButton").style.opacity = 0; // Hide stop button
-    document.getElementById("stopButton").style.display = "none";
-});
 
-document.getElementById("pauseButton").addEventListener("click", function () {
+/* Control buttons */
+function pauseButtonHandler() {
     if (!timer || timer && !timer.isRunning()) { // When pomodoro is not running, run session timer
         // Display stop button
         document.getElementById("stopButton").style.display = "inline-block";
@@ -110,9 +96,26 @@ document.getElementById("pauseButton").addEventListener("click", function () {
         if (timer.isPaused()) timer.play();
         else timer.pause();
     }
-});
-/* Info modal window */
-document.getElementById("info-modal-close").addEventListener("click", function () {
+}
+function stopButtonHandler() {
+    timer.stop();
+    document.getElementsByTagName("body")[0].setAttribute("timer", "");
+    document.getElementById("timer-mins").innerHTML = sessionLength; // Init session timer
+    document.getElementById("stopButton").style.opacity = 0; // Hide stop button
+    document.getElementById("stopButton").style.display = "none";
+}
+document.getElementById("stopButton").addEventListener("click", stopButtonHandler);
+document.getElementById("pauseButton").addEventListener("click", pauseButtonHandler);
+
+/* Modal windows */
+function openInfoModal(text) {
+    document.getElementById("info-text").innerHTML = text;
+    document.getElementById("info-modal").style.display = "block";
+    setTimeout(function () {
+        document.getElementById("info-modal").style.opacity = 1;
+    }, 1);
+}
+function closeInfoModal() {
     /* Close info modal window */
     document.getElementById("info-modal").style.opacity = 0;
     setTimeout(function () {
@@ -124,15 +127,15 @@ document.getElementById("info-modal-close").addEventListener("click", function (
         timer = createBreakTimer();
     else if (bodyTimer === "break")
         timer = createSessionTimer();
-});
-/* Settings modal window */
-document.getElementById("settings-button").addEventListener("click", function () {
+}
+
+function openSettingsModal() {
     document.getElementById("settings-modal").style.display = "block";
     setTimeout(function () {
         document.getElementById("settings-modal").style.opacity = 1;
     }, 1);
-});
-document.getElementById("settings-modal-close").addEventListener("click", function () {
+}
+function closeSettingsModal() {
     /* Update pomodoro lengths */
     sessionLength = document.getElementById("session-length").valueOf().value;
     breakLength = document.getElementById("break-length").valueOf().value;
@@ -146,5 +149,26 @@ document.getElementById("settings-modal-close").addEventListener("click", functi
     setTimeout(function () {
         document.getElementById("settings-modal").style.display = "none";
     }, 1000);
-});
+}
+document.getElementById("info-modal-close").addEventListener("click", closeInfoModal);
+document.getElementById("settings-button").addEventListener("click", openSettingsModal);
+document.getElementById("settings-modal-close").addEventListener("click", closeSettingsModal);
 
+
+/* Keyboard shortcuts */
+window.addEventListener("keydown", function (e) {
+    if (e.keyCode == 27) {
+        if (document.getElementById("info-modal").style.opacity == 1) {
+            closeInfoModal();
+        }
+        else if (document.getElementById("settings-modal").style.opacity == 1) {
+            closeSettingsModal();
+        }
+    }
+    else if(e.keyCode == 32) {
+        pauseButtonHandler();
+    }
+    else if(e.keyCode == 83) {
+        openSettingsModal();
+    }
+});
