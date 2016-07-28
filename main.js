@@ -33,7 +33,7 @@ var Timer = function(w, callback) {
     function stopTimer() {
         clearInterval(timer);
         running = false;
-        var sound = new Audio("gong.wav");
+        var sound = new Audio("https://mapuwa.github.io/Pomodoro/gong.wav");
         sound.play();
         current = 0;
         displayTime();
